@@ -12,12 +12,13 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="h-screen mt-8 flex flex-col items-start mx-12">
+    <div className="mt-8 flex flex-col items-start mx-12">
       <div className="w-full flex items-between justify-between">
         <Logosmall />
-        <button 
-        onClick={handleSearchClick}
-        className="w-40 h-12 text-white font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:scale-105 duration-200 hover:drop-shadow-2xl hover:shadow-purple-800 hover:cursor-pointer">
+        <button
+          onClick={handleSearchClick}
+          className="w-40 h-12 text-white font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:scale-105 duration-200 hover:drop-shadow-2xl hover:shadow-purple-800 hover:cursor-pointer"
+        >
           Back to Search
         </button>
       </div>

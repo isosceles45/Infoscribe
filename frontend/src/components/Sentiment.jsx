@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Bars } from "react-loader-spinner";
+import BACKEND_URL from "../commons";
 
 const Sentiment = () => {
   const { id } = useParams();
@@ -9,11 +10,9 @@ const Sentiment = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
 
-  console.log("id in sentiment", id);
-
   useEffect(() => {
     const fetchData = async () => {
-      const url = `http://127.0.0.1:5000/sentiment/${id}`;
+      const url = `${BACKEND_URL}/sentiment/${id}`;
       try {
         const response = await axios.get(url);
         const { data } = response;
@@ -50,56 +49,62 @@ const Sentiment = () => {
     }
   };
 
+  // Calculate counts of positive and negative comments
+  const positiveCount = comments.filter(
+    (comment) => comment.label === "positive"
+  ).length;
+  const negativeCount = comments.filter(
+    (comment) => comment.label === "negative"
+  ).length;
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Comments</h2>
-      <div className="flex space-x-4 mb-4">
-        <button
-          onClick={() => filterComments("all")}
-          className={`btn ${getButtonColor("all")}`}
-        >
-          All
-        </button>
-        <button
-          onClick={() => filterComments("positive")}
-          className={`btn ${getButtonColor("positive")}`}
-        >
-          Positive
-        </button>
-        <button
-          onClick={() => filterComments("negative")}
-          className={`btn ${getButtonColor("negative")}`}
-        >
-          Negative
-        </button>
-        <button
-          onClick={() => filterComments("neutral")}
-          className={`btn ${getButtonColor("neutral")}`}
-        >
-          Neutral
-        </button>
+    <div className="max-w-screen-lg mx-auto p-4">
+      <h2 className="flex items-center justify-between text-3xl font-bold mb-6 text-center">
+        Comments
+        <span className="flex items-center ml-auto">
+          <span className="mr-3 w-3 h-3 bg-green-500 rounded-full"></span>
+          {positiveCount}
+        </span>
+        <span className="flex items-center">
+          <span className="mx-3 w-3 h-3 bg-red-500 rounded-full"></span>
+          {negativeCount}
+        </span>
+      </h2>
+      <div className="flex justify-center space-x-4 mb-6">
+        {["all", "positive", "negative", "neutral"].map((label) => (
+          <button
+            key={label}
+            onClick={() => filterComments(label)}
+            className={`btn ${getButtonColor(
+              label
+            )} rounded-full px-6 py-2 text-gray-900 hover:text-gray-200`}
+          >
+            {label.charAt(0).toUpperCase() + label.slice(1)}
+          </button>
+        ))}
       </div>
-      <ul className="list-disc ml-4">
-        {!loading ? comments.map(
-          (comment, index) =>
-            (filter === "all" || filter === comment.label) && (
-              <li key={index} className="text-left mb-2">
-                {comment.text}
-              </li>
-            )
-        ) : 
-        <Bars
-        height="30"
-        width="30"
-        color="#FF00FF"
-        className="mx-auto"
-        ariaLabel="bars-loading"
-        wrapperStyle={{}}
-        wrapperClass=""
-        visible={true}
-      />
-        }
+      <ul className="list-disc ml-8">
+        {!loading ? (
+          comments.map(
+            (comment, index) =>
+              (filter === "all" || filter === comment.label) && (
+                <li key={index} className="text-left mb-4">
+                  {comment.text}
+                </li>
+              )
+          )
+        ) : (
+          <div className="flex justify-center">
+            <Bars
+              height={50}
+              width={50}
+              color="#4B5563"
+              className="mx-auto"
+              ariaLabel="bars-loading"
+              visible={true}
+            />
+          </div>
+        )}
       </ul>
     </div>
   );

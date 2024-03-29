@@ -7,9 +7,11 @@
   line-height: 1.5;
   font-weight: 400;
 
+  background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%);
+
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: radial-gradient(circle, #040103, #0d000a, #120010, #160016, #19001b, #1a001a, #1a001a, #1b0019, #180012, #14000b, #0c0004, #000000);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -27,6 +29,7 @@ a:hover {
 }
 
 body {
+  background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%);
   margin: 0;
   display: flex;
   place-items: center;
