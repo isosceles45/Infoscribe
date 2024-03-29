@@ -9,7 +9,7 @@ from Summary import get_video_transcript
 app = Flask(__name__)
 CORS(app)
 
-pinecone = Pinecone(api_key="55e1c7a7-6374-4a46-9650-b075f74e2158", environment="us-west1-gcp")
+pinecone = Pinecone(api_key="6acb0685-3e9c-4128-8c17-df9997f70cf7", environment="us-west1-gcp")
 index = pinecone.Index('youtube-search')
 
 retriever = SentenceTransformer('flax-sentence-embeddings/all_datasets_v3_mpnet-base')
@@ -38,6 +38,24 @@ def sentiment(video_id):
         sentiments = get_youtube_sentiments(video_id)
         
         return jsonify(sentiments), 200
+    else:
+        return jsonify({"error": "Video ID is required"}), 400
+
+@app.route("/summary/<video_id>")
+def summary(video_id):
+    if video_id:
+        summ = get_video_summary(video_id)
+        
+        return jsonify({"summary":summ}), 200
+    else:
+        return jsonify({"error": "Video ID is required"}), 400
+    
+@app.route("/transcript/<video_id>")
+def transcript(video_id):
+    if video_id:
+        trans = get_video_transcript(video_id)
+        
+        return jsonify({"transcript":trans}), 200
     else:
         return jsonify({"error": "Video ID is required"}), 400
 
