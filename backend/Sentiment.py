@@ -16,7 +16,7 @@ def get_youtube_sentiments(video_id):
     # Google API setup
     api_service_name = "youtube"
     api_version = "v3"
-    DEVELOPER_KEY = "AIzaSyBn_z3QvDE4LOosiIL31EiGrzHmHLYeyzw"
+    DEVELOPER_KEY = "AIzaSyCbeKMHyKxU7r7t6R1cVBcU3wcnPWp-Ijc"
 
     youtube = googleapiclient.discovery.build(
         api_service_name, api_version, developerKey=DEVELOPER_KEY)

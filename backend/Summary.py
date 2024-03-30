@@ -14,7 +14,7 @@ def get_video_transcript(video_id):
 def get_video_summary(video_id):
     transcript = get_video_transcript(video_id)
     
-    summarizer = pipeline("summarization")
+    summarizer = pipeline("summarization", model="knkarthick/MEETING_SUMMARY")
     max_chunk = 500
 
     # Split text into sentences at '<eos>'
@@ -41,9 +41,6 @@ def get_video_summary(video_id):
         final_chunks.append(chunks[-1])
     else:
         final_chunks = chunks
-    res = summarizer(final_chunks, max_length=480, min_length=30, do_sample=False)
-    ' '.join([summ['summary_text'] for summ in res])
-    text = ' '.join([summ['summary_text'] for summ in res])
-    
-    return text
-
+    res = summarizer(final_chunks, max_length=120, min_length=30, do_sample=False)
+    summary_text = ' '.join([summ['summary_text'] for summ in res])  # Fix here
+    return summary_text  # Return the result

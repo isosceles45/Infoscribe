@@ -5,6 +5,7 @@ from sentence_transformers import SentenceTransformer
 from Sentiment import get_youtube_sentiments
 from Summary import get_video_summary
 from Summary import get_video_transcript
+from youtube_results import search_and_fetch_videos
 
 app = Flask(__name__)
 CORS(app)
@@ -13,10 +14,6 @@ pinecone = Pinecone(api_key="6acb0685-3e9c-4128-8c17-df9997f70cf7", environment=
 index = pinecone.Index('youtube-search')
 
 retriever = SentenceTransformer('flax-sentence-embeddings/all_datasets_v3_mpnet-base')
-
-@app.route("/")
-def hello():
-    return "Hello, World!"
 
 @app.route("/search", methods=["POST"])
 def search():
@@ -58,6 +55,15 @@ def transcript(video_id):
         return jsonify({"transcript":trans}), 200
     else:
         return jsonify({"error": "Video ID is required"}), 400
+
+@app.route("/ytsearch/<query>")
+def ytsearch(query):
+    if query:
+        videos = search_and_fetch_videos(query, max_results=1)
+        
+        return jsonify({"videos":videos}), 200
+    else:
+        return jsonify({"error": "Search query is required"}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
